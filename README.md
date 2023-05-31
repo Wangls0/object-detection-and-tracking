@@ -88,5 +88,40 @@ sudo apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31
 
 `roscore`
 
+如果出现如下输出,则说明安装成功
 
+```
+... logging to /home/robin/.ros/log/a5118af0-5474-11ea-8b86-e454e828c524/r
+Checking log directory for disk usage. This may take awhile.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+started roslaunch server http://robin-G3-3590:34223/
+ros_comm version 1.12.14
+SUMMARY
+========
+PARAMETERS
+* /rosdistro: kinetic
+* /rosversion: 1.12.14
+NODES
+auto-starting new master
+process[master]: started with pid [30244]
+ROS_MASTER_URI=http://robin-G3-3590:11311/
+setting /run_id to a5118af0-5474-11ea-8b86-e454e828c524
+process[rosout-1]: started with pid [30261]
+started core service [/rosout]
+```
+
+## 新建工作空间（若已有工作空间则跳过此步）
+
+`sudo apt install python3-catkin-tools`
+
+`mkdir -p ~/catkin_ws/src`
+
+`mkdir -p ~/catkin_ws/scripts`
+
+`cd catkin_ws && catkin init`
+
+`catkin build`
+
+# Gazebo安装
 
