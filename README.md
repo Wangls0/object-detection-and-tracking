@@ -125,3 +125,109 @@ started core service [/rosout]
 
 # Gazebo安装
 
+先卸载之前的gazebo
+
+`sudo apt-get remove gazebo* `
+
+`sudo apt-get remove libgazebo*`
+
+`sudo apt-get remove ros-melodic-gazebo*`
+
+## 安装
+
+1.设置软件源
+
+``sudo sh -c 'echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-stable `lsb_release -cs` main" > /etc/apt/sources.list.d/gazebo-stable.list'``
+
+输入
+
+`cat /etc/apt/sources.list.d/gazebo-stable.list`
+
+测试是否正确写入，若正确写入，将显示
+
+`deb http://packages.osrfoundation.org/gazebo/ubuntu-stable bionic main`
+
+2.设置密钥
+
+`wget https://packages.osrfoundation.org/gazebo.key -O - | sudo apt-key add -`
+
+3.安装gazebo11
+
+`sudo apt-get update`
+
+- 确保更新过程没有错误，若成功更新，终端应显示
+
+```
+$ sudo apt-get update
+...
+Hit http://ppa.launchpad.net bionic/main Translation-en
+Ign http://us.archive.ubuntu.com bionic/main Translation-en_US
+Ign http://us.archive.ubuntu.com bionic/multiverse Translation-en_US
+Ign http://us.archive.ubuntu.com bionic/restricted Translation-en_US
+Ign http://us.archive.ubuntu.com bionic/universe Translation-en_US
+Reading package lists... Done
+```
+
+`sudo apt-get install gazebo11`
+
+`sudo apt-get install libgazebo11-dev`
+
+`sudo apt upgrade`
+
+4.测试是否安装成功
+
+`gazebo`
+
+若出现问题，参考[链接](https://classic.gazebosim.org/tutorials?cat=install&tut=install_ubuntu&ver=11.0)
+
+## 修改ROS插件
+
+1.安装依赖
+
+`sudo apt-get install ros-melodic-moveit-msgs ros-melodic-object-recognition-msgs ros-melodic-octomap-msgs ros-melodic-camera-info-manager  ros-melodic-control-toolbox ros-melodic-polled-camera ros-melodic-controller-manager ros-melodic-transmission-interface ros-melodic-joint-limits-interface`
+
+2.编译插件
+
+`cd ~/catkin_ws/src`
+
+`git clone -b melodic-devel https://github.com/ros-simulation/gazebo_ros_pkgs.git`
+
+`cd ~/catkin_ws`
+
+`catkin build`
+
+3.测试是否安装成功
+
+`roscore`
+
+在新的终端中输入
+
+`source ~/catkin_ws/devel/setup.bash`
+
+`rosrun gazebo_ros gazebo`
+
+4.下载模型
+
+若安装成功，下载模型文件，解压后放入`~/.gazebo`中，
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
