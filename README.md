@@ -311,6 +311,7 @@ system_status: 3
 `rm -r stereo_camera/ 3d_lidar/ 3d_gpu_lidar/ hokuyo_lidar/`
 
 重新编译PX4固件
+
 `cd ~/PX4_Firmware`
 
 `make px4_sitl_default gazebo`
@@ -342,6 +343,9 @@ gazebo启动后，在另一个终端运行以下命令，建立通信
 在终端中按i把向上速度加到0.3以上，再按b切offboard模式，最后按t解锁，飞机起飞到一定高度后切换到悬停模式
 
 # 目标检测与跟踪
+
+## 编译Darknet_ROS
+
 
 
 
