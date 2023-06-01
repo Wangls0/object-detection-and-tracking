@@ -210,6 +210,73 @@ Reading package lists... Done
 
 若安装成功，下载[模型文件]()，解压后放入`~/.gazebo`中，
 
+# MAVROS安装
+
+`sudo apt install ros-melodic-mavros ros-melodic-mavros-extras`
+
+`wget https://gitee.com/robin_shaun/XTDrone/raw/master/sitl_config/mavros/install_geographiclib_datasets.sh`
+
+`sudo chmod a+x ./install_geographiclib_datasets.sh`
+
+`sudo ./install_geographiclib_datasets.sh`
+
+# PX4配置
+
+`git clone https://github.com/PX4/PX4-Autopilot.git`
+
+`mv PX4-Autopilot PX4_Firmware`
+
+`cd PX4_Firmware`
+
+`git checkout -b xtdrone/dev v1.13.2`
+
+`git submodule update --init --recursive`
+
+`make px4_sitl_default gazebo`
+
+编译完成后关闭gazebo即可，以上为推荐配置，更多配置见[PX4仿真文档](https://dev.px4.io/master/en/simulation/)
+
+修改 ~/.bashrc文件，在修改.bashrc文件后面加入以下代码
+
+```
+source ~/catkin_ws/devel/setup.bash
+
+source ~/PX4_Firmware/Tools/setup_gazebo.bash ~/PX4_Firmware/ ~/PX4_Firmware/build/px4_sitl_default
+
+export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:~/PX4_Firmware
+
+export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:~/PX4_Firmware/Tools/sitl_gazebo
+
+```
+
+在终端中运行
+
+`source ~/.bashrc`
+
+然后运行以下命令，启动gazebo
+
+`cd ~/PX4_Firmware`
+
+`roslaunch px4 mavros_posix_sitl.launch`
+
+打开一个新的终端，运行
+
+`rostopic echo /mavros/state`
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
