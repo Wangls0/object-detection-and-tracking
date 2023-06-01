@@ -263,9 +263,44 @@ export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:~/PX4_Firmware/Tools/sitl_gazebo
 
 `rostopic echo /mavros/state`
 
+终端中显示以下内容
 
+```
+---
 
+header:
 
+seq: 11
+
+stamp:
+
+secs: 1827
+
+nsecs: 173000000
+
+frame_id: ''
+
+connected: True
+
+armed: False
+
+guided: False
+
+manual_input: True
+
+mode: "MANUAL"
+
+system_status: 3
+
+---
+
+```
+
+若connected: True,则说明MAVROS与SITL通信成功。如果是false，一般是因为.bashrc里的路径写的不对
+
+# 安装QGroundControl地面站
+
+[安装链接](https://docs.qgroundcontrol.com/en/getting_started/download_and_install.html)
 
 
 
