@@ -267,33 +267,19 @@ export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:~/PX4_Firmware/Tools/sitl_gazebo
 
 ```
 ---
-
 header:
-
 seq: 11
-
 stamp:
-
 secs: 1827
-
 nsecs: 173000000
-
 frame_id: ''
-
 connected: True
-
 armed: False
-
 guided: False
-
 manual_input: True
-
 mode: "MANUAL"
-
 system_status: 3
-
 ---
-
 ```
 
 若connected: True,则说明MAVROS与SITL通信成功。如果是false，一般是因为.bashrc里的路径写的不对
@@ -301,6 +287,68 @@ system_status: 3
 # 安装QGroundControl地面站
 
 [安装链接](https://docs.qgroundcontrol.com/en/getting_started/download_and_install.html)
+
+# XTDrone源码下载
+
+`git clone https://gitee.com/robin_shaun/XTDrone.git`
+
+`cd XTDrone`
+
+`git checkout 1_13_2`
+
+`git submodule update --init --recursive`
+
+`cp sitl_config/init.d-posix/* ~/PX4_Firmware/ROMFS/px4fmu_common/init.d-posix/`
+
+`cp -r sitl_config/launch/* ~/PX4_Firmware/launch/`
+
+`cp sitl_config/worlds/* ~/PX4_Firmware/Tools/sitl_gazebo/worlds/`
+
+`cp -r sitl_config/models/* ~/PX4_Firmware/Tools/sitl_gazebo/models/`
+
+`cd ~/.gazebo/models/`
+
+`rm -r stereo_camera/ 3d_lidar/ 3d_gpu_lidar/ hokuyo_lidar/`
+
+重新编译PX4固件
+`cd ~/PX4_Firmware`
+
+`make px4_sitl_default gazebo`
+
+# 测试
+
+至此为止，仿真平台配置结束，若有其他问题，参见[仿真平台使用文档](https://www.yuque.com/xtdrone/manual_cn/basic_config_13)
+
+用键盘控制无人机测试仿真平台是否配置成功
+
+在一个终端运行以下命令，启动仿真环境
+
+`cd ~/PX4_Firmware`
+
+`roslaunch px4 indoor1.launch`
+
+gazebo启动后，在另一个终端运行以下命令，建立通信
+
+`cd ~/XTDrone/communication/`
+
+`python multirotor_communication.py iris 0`
+
+建立通信后，启动键盘控制节点
+
+`cd ~/XTDrone/control/keyboard`
+
+`python multirotor_keyboard_control.py iris 1 vel`
+
+在终端中按i把向上速度加到0.3以上，再按b切offboard模式，最后按t解锁，飞机起飞到一定高度后切换到悬停模式
+
+# 目标检测与跟踪
+
+
+
+
+
+
+
 
 
 
