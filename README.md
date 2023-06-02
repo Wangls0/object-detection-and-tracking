@@ -342,6 +342,78 @@ gazebo启动后，在另一个终端运行以下命令，建立通信
 
 ## 编译Darknet_ROS
 
+### 安装Opencv
+
+选择安装合适版本[Opencv](https://opencv.org/releases/)
+
+- 注意ROS自带Opencv，若安装先卸载原有Opencv，否则将导致报错。
+
+
+
+
+
+
+
+
+
+### 安装c++ boost库
+
+
+
+
+
+
+### 编译
+
+
+
+
+
+
+
+
+
+## 启动YOLO进行测试
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## 编译Darknet
+
+
+
+
+
+
+
+
+
+## 制作数据集
+
+
+
+
+## 训练YOLO
+
+
+
+
+
+
+
+
+
+
 
 
 
