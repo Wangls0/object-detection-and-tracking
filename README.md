@@ -240,13 +240,9 @@ Reading package lists... Done
 
 ```
 source ~/catkin_ws/devel/setup.bash
-
 source ~/PX4_Firmware/Tools/setup_gazebo.bash ~/PX4_Firmware/ ~/PX4_Firmware/build/px4_sitl_default
-
 export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:~/PX4_Firmware
-
 export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:~/PX4_Firmware/Tools/sitl_gazebo
-
 ```
 
 在终端中运行
