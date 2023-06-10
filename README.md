@@ -342,11 +342,15 @@ gazebo启动后，在另一个终端运行以下命令，建立通信
 
 ## 编译Darknet_ROS
 
+若此步遇到问题，参考[链接](https://gitee.com/robin_shaun/darknet_ros_yolov4)
+
+
 ### 安装Opencv
 
-选择安装合适版本[Opencv](https://opencv.org/releases/)
 
-- 注意ROS自带Opencv，若安装先卸载原有Opencv，否则将导致报错。
+ROS自带Opencv
+
+若安装其他版本[Opencv](https://opencv.org/releases/)，先卸载原有Opencv，否则将导致报错。
 
 
 
@@ -358,12 +362,42 @@ gazebo启动后，在另一个终端运行以下命令，建立通信
 
 ### 安装c++ boost库
 
+下载[boost库](https://www.boost.org)
+
+
+`sudo apt-get update`
+
+`sudo apt-cache search boost`
+ 
+`sudo apt-get install libboost-all-dev`
+
+`tar -xzvf boost_1_73_0.tar.gz`
+
+- 修改命令为对应版本
+
+进入到解压后文件执行
+
+`sudo ./bootstrap.sh`
+
+
+`sudo ./b2 install`
 
 
 
 
 
 ### 编译
+
+`cd catkin_ws/src`
+
+
+`git clone --recursive git@github.com:leggedrobotics/darknet_ros.git`
+
+
+`cd ../`
+
+
+`catkin build darknet_ros -DCMAKE_BUILD_TYPE=Release`
 
 
 
@@ -375,14 +409,59 @@ gazebo启动后，在另一个终端运行以下命令，建立通信
 
 ## 启动YOLO进行测试
 
+启动roslaunch
+
+
+`source devel/setup.bash`
+
+
+`roslaunch darknet_ros task1.launch`
+
+启动PX4室外场景仿真
+
+
+`cd ~/PX4_Firmware`
+
+
+`roslaunch px4 outdoor1.launch`
+
+建立通信
+
+
+`cd ~/XTDrone/communication`
+
+
+
+`python multirotor_communication.py typhoon_h480 0`
+
+
+控制无人机起飞
+
+
+`cd ~/XTDrone/control/keyboard`
 
 
 
 
+`python multirotor_keyboard_control.py typhoon_h480 1 vel`
 
 
 
+启动云台控制
 
+`cd ~/XTDrone/sensing/gimbal`
+
+
+
+`python gimbal_control.py typhoon_h480 0`
+
+
+在原地等待行人走过来，或者主动控制飞机去找行人。等目标出现后，先关闭multirotor_keyboard_control.py，然后启动
+
+`cd ~/XTDrone/control`
+
+
+`python yolo_human_tracking.py typhoon_h480 0`
 
 
 
@@ -390,17 +469,91 @@ gazebo启动后，在另一个终端运行以下命令，建立通信
 
 ## 编译Darknet
 
+编译前先根据显卡型号安装对应版本CUDA和CUDnn
+
+
+`cd ~/catkin_ws/src/darknet_ros/darknet`
+
+`git clone https://github.com/pjreddie/darknet.git`
+
+
+`cd darknet`
 
 
 
+`make`
+
+修改Makefile中的第一行为
+
+`GPU=1`
 
 
+重新执行
+
+`make`
+
+
+若遇到问题，参考[链接](https://pjreddie.com/darknet/install/)
 
 
 
 ## 制作数据集
 
+### 截图
 
+`cd ~/XTDrone/sitl_config/worlds    #具体路径位置根据自己实际情况`
+
+
+
+
+`gazebo outdoor1.world`
+
+打开gazebo后使用右上角的相机截取数据集，尽量让`human` `car` `street sign` `fire hydrant`四种物体同时出现，并包含近景、远景各个视角
+
+
+`cd ~/catkin_ws/src/darknet_ros/darknet/xtdrone`
+
+
+`mkdir data xml`
+
+
+`cp  ~/.gazebo/pictures/* ~/catkin_ws/src/darknet_ros/darknet/data/xtdrone/JPEGImages/`
+
+
+
+
+
+
+
+
+### 标注
+
+使用labelimg对数据进行标注
+
+
+
+`sudo apt-get install pyqt5-dev-tools`
+
+
+`sudo pip3 install lxml`
+
+
+`git clone https://github.com/tzutalin/labelImg.git`
+
+
+`cd labelImg`
+
+
+`make all`
+
+
+`python3 labelImg.py  #打开labelImg`
+
+通过"打开目录"将输入目录设置成刚才的`~/catkin_ws/src/darknet_ros/darknet/data/xtdrone/VOC2007/JPEGImages/`,通过"更改保存目录"将输出目录设置成`~/catkin_ws/src/darknet_ros/darknet/data/xtdrone/VOC2007/Annotations`
+
+
+
+用快捷键`W`创建区块，把所有检测目标框起来，然后打上对应的标签，`Ctrl+S`保存，点击下一个图片，重复上述操作直至所有图标标注完成。
 
 
 ## 训练YOLO
