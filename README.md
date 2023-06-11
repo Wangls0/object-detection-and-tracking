@@ -208,7 +208,7 @@ Reading package lists... Done
 
 4.下载模型
 
-若安装成功，下载[模型文件]()，解压后放入`~/.gazebo`中，
+若安装成功，下载[模型文件](https://pan.baidu.com/s/1-re_zVcv_NDra4dQYkUDLw?pwd=4qu4)，解压后放入`~/.gazebo`中，
 
 # MAVROS安装
 
@@ -605,7 +605,7 @@ ROS自带Opencv
 
 
 
-下载预训练权重 yolov4.conv.137，并放入 darknet/backup 中，然后开始训练
+下载预训练权重 [yolov4.conv.137](https://pan.baidu.com/s/1gbz7OD-VYRbEem53R8ajyw?pwd=5jkw)，并放入 darknet/backup 中，然后开始训练
 
 
 `cd ~/catkin_ws/src/darknet_ros/darknet`
