@@ -560,13 +560,88 @@ ROS自带Opencv
 
 
 
+先新建目录
+
+`cd ~/catkin_ws/src/darknet_ros/darknet/data/xtdrone/VOC2007/`
 
 
 
 
+`mkdir -p ImageSets/Main`
+
+运行xml2voc.py，修改.py文件中Annotations/和Main/的实际路径，运行文件将标注得到的xml转为voc格式
+
+
+`cd ~/catkin_ws/src/darknet_ros/darknet/scripts`
 
 
 
+`python3 xml2voc.py`
+
+
+再运行voc_label_xtdrone.py，修改classes的类型为自己所需要的类型（不修改的话会无法获取label的标签），根据自己的实际路径修改voc_label_xtdrone.py文件中的所有路径（可以用ctrl+h一并替换），获得YOLO训练所需的标签
+
+
+`python3 voc_label_xtdrone.py`
+
+
+
+
+根据需要修改darknet/cfg 文件夹中的文件：obj.names 中保存目标的类别标签,每个标签单独一行。obj.data 中保存数据集位置。obj_yolov4.cfg 为网络的配置文件。
+
+
+网络的配置需注意以下几点
+- 根据 GPU 性能修改 subdivisions, width 和 height。对于 2080ti, batch=32,subdivision=16,width=640,height=352。width 和 height 必须为 32 的倍数。
+
+- 修改每一个 yolo 层中的 classes 为目标类别的数量,三处。
+
+- 修改 yolo 层前的 convolution 层中的 filters,filters=(classes+5)*3,三处。
+
+- 修改 max_batches=classes*2000,最小 6000。
+
+- 修改 steps=max_batches0.8, max_batches0.9。
+
+- 单 GPU 训练时,learning_rate=0.001,burn_in=1000。
+
+
+
+下载预训练权重 yolov4.conv.137，并放入 darknet/backup 中，然后开始训练
+
+
+`cd ~/catkin_ws/src/darknet_ros/darknet`
+
+
+`./darknet detector train cfg/xtdrone/obj.data cfg/xtdrone/obj_yolov4.cfg backup/yolov4.conv.137 -map`
+
+
+然后，需要对应修改darknet_ros中的配置文件。将网络cfg文件和weights文件，对应放入到`darknet_ros/yolo_network_config/cfg/`和`darknet_ros/yolo_network_config/weights/`下
+
+
+根据配置修改config/yolov4.yaml
+
+```
+yolo_model:
+
+  config_file:
+    name: human.cfg
+  weight_file:
+    name: human.weights
+  threshold:
+    value: 0.8
+  detection_classes:
+    names:
+      - human
+      - car
+      - fire hydrant
+      - street sign
+```
+
+
+然后按照启动YOLO,即可测试网络
+
+
+
+仿真平台[使用文档](https://www.yuque.com/xtdrone/manual_cn)
 
 
 
